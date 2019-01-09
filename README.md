@@ -33,6 +33,8 @@
       th_data: 表格头部的属性值(必须要设置)
       onEdit: 编辑过了所触发的事件
       onClick: 点击了listen_click设为true的th所触发的事件(只有listen_click设为true才能触发)
+      
+      
     2.th_data示例{
      title:{value:'任务名称',width:80,showToast:false,listen_click:true},
      startTime:{value:'开始时间',width:150,showToast:true,chooseTime:true,time_mode:1},
@@ -49,6 +51,8 @@
          shrink: 该项显示收缩的图例(只用设置其中某一项)
          listen_click: 是否监听点击事件
        th_data里的属性必须要和ganteData里params里的属性相对应,属性名要一样
+       
+       
      3.ganteData示例[
      {
        gunter_id:1,
