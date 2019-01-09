@@ -201,6 +201,9 @@
   }
 </script>
 <style>
+  li{
+    list-style: none;
+  }
   .gante-box ::-webkit-scrollbar {
     width:5px;
     height: 5px;
