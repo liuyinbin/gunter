@@ -247,9 +247,10 @@
     background-color: #ccc;
   }
   .gante-box{
-    width: 90%;
+    width: 100%;
     border: 1px solid #ccc;
     overflow: hidden;
+    box-sizing: border-box;
   }
   .gante-table-box{
     overflow-x: auto;
