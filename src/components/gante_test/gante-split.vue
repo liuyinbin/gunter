@@ -22,10 +22,30 @@
 
     },
     methods:{
+      //      获取元素距离浏览器的距离
+      getPos(ele){
+        var p=ele.offsetParent;
+        var left=ele.offsetLeft;
+        var top=ele.offsetTop
+        while(p){
+          if(window.navigator.userAgent.indexOf("MSIE 8")>-1){
+            left+=p.offsetLeft;
+            top+=p.offsetTop;
+          }else{
+            left+=p.offsetLeft+p.clientLeft;
+            top+=p.offsetTop+p.clientTop;
+          }
+          p=p.offsetParent;
+        }
+        var obj={};
+        obj.x=left;
+        obj.y=top;
+        return obj;
+      },
       doc_move(e){
         if(this.mouseDown){
           var _body = document.getElementsByTagName('body')[0]
-          this.split_resize_left = e.clientX - this.$refs.split_liu.offsetLeft +3
+          this.split_resize_left = e.clientX - this.getPos(this.$refs.split_liu).x +3
           _body.style.cursor = 'e-resize'
         }
       },
