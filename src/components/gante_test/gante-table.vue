@@ -206,6 +206,7 @@
     width: 100%;
     box-sizing: border-box;
     padding: 0 10px;
+    min-height: 16px;
   }
   #gante-table__column-resize-proxy{
     position: absolute;
