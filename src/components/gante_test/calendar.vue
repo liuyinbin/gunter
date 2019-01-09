@@ -21,7 +21,7 @@
       <!--</ul>-->
     </div>
     <div class="calendar-bottom">
-      <div class="today-button">今天</div>
+      <div @click="to_today" class="today-button">今天</div>
     </div>
   </div>
 </template>
@@ -55,6 +55,12 @@
     methods:{
       show_calendar(e){
         this.showCalendar = false
+      },
+      to_today(){
+        this.current_day = new Date()
+        this.checkedDay = this.format(new Date().getFullYear(),new Date().getMonth(),new Date().getDate())
+        this.showCalendar = false
+        this.$emit('change',this.current_day)
       },
       chooseDay(year,month,day){
         this.current_day = new Date(year,month,day)
