@@ -177,7 +177,7 @@
         for(let i of gante_data){
           if(i.start_time || i.end_time){
             i['left'] = (i.start_time - start_time)/time
-            if(i.end_time && i.end_time >= i.start_time){
+            if(i.end_time && i.end_time >= i.start_time && i.start_time){
               i['width'] = (new Date(new Date(i.end_time).getFullYear(),new Date(i.end_time).getMonth(),new Date(i.end_time).getDate()+1) - i.start_time)/time
             }else{
               i['width'] = 0
