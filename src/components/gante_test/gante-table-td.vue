@@ -26,7 +26,7 @@
       key_value:String
     },
     methods:{
-    //      获取元素距离浏览器的距离
+//      获取元素距离浏览器的距离
      getPos(ele){
         var p=ele.offsetParent;
         var left=ele.offsetLeft;
@@ -47,7 +47,7 @@
         return obj;
       },
 //      编辑任务
-       to_edit(e,value){
+      to_edit(e,value){
         if(this.th.edit || this.th.chooseTime){
           this.edit = true
           if(this.th.chooseTime){
@@ -77,11 +77,19 @@
         }else{
           this.$emit('change-calendar',{show_calendar:false})
         }
+
+        if(this.th.listen_click){
+          this.$emit('on-click',{
+            argument:this.key_value,
+            value:this.td_data.params[this.key_value],
+            data:this.td_data
+          })
+        }
       },
 //      点击input时事件
       change_calendar(e){
         if(this.th.chooseTime){
-          this.$emit('change-calendar',{show_calendar:true,calendar_left:e.parentNode.parentNode.offsetLeft,calendar_top:e.parentNode.parentNode.offsetTop+44})
+          this.$emit('change-calendar',{show_calendar:true,calendar_left:this.getPos(e.parentNode.parentNode).x,calendar_top:this.getPos(e.parentNode.parentNode).y+44})
         }
       },
       td_blur(id){
