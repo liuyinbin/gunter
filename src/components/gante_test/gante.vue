@@ -81,7 +81,7 @@
               id:this.change_id,
               value:this.change_value
             }})
-          this.init({ganteData:this.ganteData,start_time:this.start_time,end_time:this.end_time})
+          this.init({ganteData:this.ganteData,start_time:this.start_time,end_time:this.end_time},false)
         }
       },
 //      点击显示日历
@@ -181,8 +181,13 @@
           this.time_mode = time_mode
         }
 
-        this.onEdit = onEdit
-        this.onClick = onClick
+       if(onEdit!=undefined){
+          this.onEdit = onEdit
+        }
+
+        if(onClick!=undefined){
+          this.onClick = onClick
+        }
 
         if(start_time!=undefined){
           this.start_time = start_time
