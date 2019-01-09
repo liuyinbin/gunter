@@ -26,12 +26,32 @@
       key_value:String
     },
     methods:{
+    //      获取元素距离浏览器的距离
+     getPos(ele){
+        var p=ele.offsetParent;
+        var left=ele.offsetLeft;
+        var top=ele.offsetTop
+        while(p){
+          if(window.navigator.userAgent.indexOf("MSIE 8")>-1){
+            left+=p.offsetLeft;
+            top+=p.offsetTop;
+          }else{
+            left+=p.offsetLeft+p.clientLeft;
+            top+=p.offsetTop+p.clientTop;
+          }
+          p=p.offsetParent;
+        }
+        var obj={};
+        obj.x=left;
+        obj.y=top;
+        return obj;
+      },
 //      编辑任务
-      to_edit(e,value){
+       to_edit(e,value){
         if(this.th.edit || this.th.chooseTime){
           this.edit = true
           if(this.th.chooseTime){
-            var time = '',left = e.parentNode.parentNode.offsetLeft,top = e.parentNode.parentNode.offsetTop+44,gante_table_box =  document.getElementsByClassName('gante-table-box')[0],ganteview = document.getElementsByClassName('ganteview')[0]
+            var time = '',left = this.getPos(e.parentNode.parentNode).x,top = this.getPos(e.parentNode.parentNode).y+44,gante_table_box =  document.getElementsByClassName('gante-table-box')[0],ganteview = document.getElementsByClassName('ganteview')[0]
             if(value.params[this.key_value] == '' || value.params[this.key_value]==null){
               time = new Date()
             }else{
