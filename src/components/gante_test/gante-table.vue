@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="gante-tbody">
-      <gante-tr @change-calendar="change_calendar" @change="change"  :all_data="data" :data="data" :th_data="th_data"></gante-tr>
+      <gante-tr @change-calendar="change_calendar" @on-click="onclick" @change="change"  :all_data="data" :data="data" :th_data="th_data"></gante-tr>
     </div>
     <div v-show="show_proxy" :style="{left:proxy_left+'px'}" id="gante-table__column-resize-proxy"></div>
   </div>
@@ -35,6 +35,9 @@
     methods:{
       change(data){
         this.$emit('change',data)
+      },
+      onclick(data){
+        this.$emit('on-click',data)
       },
       change_calendar(data){
         this.$emit('change-calendar',data)
