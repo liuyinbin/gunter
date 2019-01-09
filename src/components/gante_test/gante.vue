@@ -2,7 +2,7 @@
   <div class="ganteLiuBox">
     <div ref="gante_box" :style="{height:height+'px'}" class="gante-box">
       <div :style="{width:tabe_width+'px'}" class="gante-table-box">
-        <gante-table @change-calendar="change_calendar" @change="change" :th_data="th_data" :data="ganteData"></gante-table>
+        <gante-table @change-calendar="change_calendar" @on-click="onclick" @change="change" :th_data="th_data" :data="ganteData"></gante-table>
       </div>
       <div class="gante-gc-box" :style="{left:tabe_width+'px'}">
         <gante-gc ref="gante_gc" :start_time="start_time" :end_time="end_time" :th_data="th_data" :gante_data="ganteData"></gante-gc>
@@ -37,6 +37,9 @@
         change_value:'',//修改数据的值,修改时间用到
         start_time:0, //最小的开始时间
         end_time:0, //最大的结束时间
+        edit_data:{},
+        onEdit: () => {},
+        onClick: () => {},
       }
     },
     mounted(){
@@ -98,6 +101,17 @@
           this.change_value = data.change_value.argument
         }
       },
+//      监听点击事件
+      onclick(data){
+        if(typeof this.onClick === 'function'){
+          for(let i in data.data){
+            if(i == 'width'||i == 'left'||i== 'open'){
+              delete data.data[i]
+            }
+          }
+          this.onClick(data)
+        }
+      },
 //      统一改变数据
       change(data){
         if(data.data){
@@ -105,6 +119,14 @@
         }
         if(data.change_value){
           this.gunter_data_change(data.change_value.id,data.change_value.value,this.ganteData)
+          if(typeof this.onEdit === 'function'){
+            for(let i in this.edit_data.data){
+              if(i == 'width'||i == 'left'||i== 'open'){
+                delete this.edit_data.data[i]
+              }
+            }
+            this.onEdit(this.edit_data)
+          }
         }
       },
       gunter_data_change(id,value,data){
@@ -116,16 +138,19 @@
               }
               this.$set(i['params'], s.argument, s.value)
             }
+            this.edit_data['data'] = this.objDeepCopy(i)
+            this.edit_data['argument'] = value[0].argument
+            this.edit_data['value'] = value[0].value
           }
 //          判断最小开始时间和最大结束时间
-          if(this.start_time > i.start_time){
+          if(this.start_time > i.start_time && (i.start_time)){
             this.start_time = i.start_time
           }
-          if(this.end_time < i.end_time){
+          if(this.end_time < i.end_time && i.end_time){
             this.end_time = i.end_time
           }
           if(i.children){
-            this.gunter_data_change(id,value,i.children)
+           this.gunter_data_change(id,value,i.children)
           }
         }
       },
@@ -139,7 +164,7 @@
       },
 //      初始化
       init(params,mode = true){
-        let {ganteData,height,th_data,start_time,end_time,open,time_mode} = params
+        let {ganteData, height, th_data, start_time, end_time, open, time_mode, onEdit, onClick} = params
         if(ganteData != undefined){
           this.ganteData = ganteData
         }
@@ -155,6 +180,9 @@
         if(time_mode!=undefined){
           this.time_mode = time_mode
         }
+
+        this.onEdit = onEdit
+        this.onClick = onClick
 
         if(start_time!=undefined){
           this.start_time = start_time
