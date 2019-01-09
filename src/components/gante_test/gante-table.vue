@@ -42,6 +42,26 @@
       change_calendar(data){
         this.$emit('change-calendar',data)
       },
+      //      获取元素距离浏览器的距离
+      getPos(ele){
+        var p=ele.offsetParent;
+        var left=ele.offsetLeft;
+        var top=ele.offsetTop
+        while(p){
+          if(window.navigator.userAgent.indexOf("MSIE 8")>-1){
+            left+=p.offsetLeft;
+            top+=p.offsetTop;
+          }else{
+            left+=p.offsetLeft+p.clientLeft;
+            top+=p.offsetTop+p.clientTop;
+          }
+          p=p.offsetParent;
+        }
+        var obj={};
+        obj.x=left;
+        obj.y=top;
+        return obj;
+      },
 //      监听表格的鼠标滚轴事件,从而让甘特图上下滚动
       gun(e){
         let speed = -200,
@@ -83,25 +103,32 @@
       doc_move(e){
         var _body = document.getElementsByTagName('body')[0]
         if(this.tTD.mouseDown){
-          var gante_left = this.$refs.gante_table.offsetLeft,cel = e.clientX
+          var gante_left = this.getPos(this.$refs.gante_table).x,cel = e.clientX,gante_table_box = document.getElementsByClassName('gante-table-box')[0]
+          if(gante_table_box.scrollLeft){
+            cel = cel + gante_table_box.scrollLeft
+          }
           this.proxy_left = cel - gante_left+3
           _body.style.cursor = 'col-resize'
         }
       },
       th_down(e){
-        var table_width = this.$refs.gante_table.offsetLeft,target=e.target
-        this.oldx = e.clientX - table_width
+        var table_width = this.getPos(this.$refs.gante_table).x,target=e.target,client_x = e.clientX,gante_table_box = document.getElementsByClassName('gante-table-box')[0]
 
         if(target.classList.contains('cell')){
           target = target.parentNode
         }
-        if(e.clientX > target.offsetLeft+target.offsetWidth - 10 && e.clientX <= this.$refs.gante_table.offsetLeft+this.$refs.gante_table.offsetWidth){
+        if(gante_table_box.scrollLeft){
+          client_x = client_x + gante_table_box.scrollLeft
+        }
+        this.oldx = client_x - table_width
+        if(client_x > this.getPos(target).x + target.offsetWidth - 10 && client_x <= this.getPos(this.$refs.gante_table).x +this.$refs.gante_table.offsetWidth){
           this.old_width = target.offsetWidth
           this.show_proxy = true
           this.tTD.current_index = target.dataset.key //记录拖动的是哪个th
           this.proxy_left = this.oldx+3 //必须要加上3像素,不然拖动会有问题
           this.tTD.mouseDown = true
 //          给document绑定事件
+
           document.addEventListener('mousemove',this.doc_move,false)
           document.addEventListener('mouseup',this.doc_up,false)
         }
@@ -125,11 +152,14 @@
       },
 //      给表格头部加上鼠标悬浮可以拉动效果
       th_move(e){
-        var target = e.target,_body = document.getElementsByTagName('body')[0]
+        var target = e.target,_body = document.getElementsByTagName('body')[0],client_x = e.clientX,gante_table_box = document.getElementsByClassName('gante-table-box')[0]
         if(target.classList.contains('cell')){
           target = e.target.parentNode
         }
-        if(e.clientX > target.offsetLeft+target.offsetWidth - 10 && e.clientX <= this.$refs.gante_table.offsetLeft+this.$refs.gante_table.offsetWidth){
+        if(gante_table_box.scrollLeft){
+          client_x = client_x + gante_table_box.scrollLeft
+        }
+        if(client_x > this.getPos(target).x + target.offsetWidth - 10 && client_x <= this.getPos(this.$refs.gante_table).x + this.$refs.gante_table.offsetWidth){
           _body.style.cursor = 'col-resize'
         }else{
           _body.style.cursor = null
