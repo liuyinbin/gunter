@@ -3,8 +3,8 @@
     <div ref="cells" :title="td_data.params[key_value]" class="cell" @click.stop="to_edit($refs.cells,td_data)" :style="{width:th.width ? th.width+'px' : '80px',textIndent:th.shrink ? (td_data.level-1)*10+'px' : null,fontWeight:(td_data.level ==1 && th.shrink && !th.weight) ?'bold':'normal'}">
       <span style="width: 15px;display: inline-block;text-indent: 0" v-if="th.shrink">
         <span v-show="td_data.children" style="cursor: pointer;" @click.stop="opens(td_data.gunter_id)"  >
-            <span v-show="!td_data.open" class="icon-icon-tianjiaone" ></span>
-            <span v-show="td_data.open" class="icon-quxiaoguanzhu" ></span>
+            <span v-show="!td_data.open"><img style="width: 13px;" src="../../assets/add.png" alt=""></span>
+            <span v-show="td_data.open"><img style="width: 13px;" src="../../assets/reduce.png" alt=""></span>
         </span>
        </span>
       <span class="cell-value">{{td_data.params[key_value]}}</span>
