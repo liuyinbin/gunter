@@ -187,13 +187,13 @@
           this.time_mode = time_mode
         }
 
-				if(onEdit!=undefined){
-					this.onEdit = onEdit
-				}
+	if(onEdit!=undefined){
+		this.onEdit = onEdit
+	}
 
-				if(onClick!=undefined){
-					this.onClick = onClick
-				}
+	if(onClick!=undefined){
+		this.onClick = onClick
+	}
 
         if(start_time!=undefined){
           this.start_time = start_time
