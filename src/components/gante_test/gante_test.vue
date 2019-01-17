@@ -28,9 +28,9 @@
       	ganteData: 要加在的数据(必须要设置)
       	start_time: 最小的开始时间(必须要设置,时间戳格式)
       	end_time: 最大的结束时间(必须要设置,时间戳格式)
-        tabe_width: 表格的宽度(默认是甘特图的一半)
+        tabe_width: 表格的宽度(默认是甘特图的一半) 支持calc()写法或百分比写法,在没有具体宽度的情况下很有用
   	    open: 子任务是否打开的状态(默认为true)
-      	height: 甘特图的高度(默认是300)
+      	height: 甘特图的高度(默认是300)支持calc()写法或百分比写法,在没有具体高度的情况下很有用
       	time_mode: 显示的刻度(时间刻度 1:日,2周,3月,4季,5年,默认是1)
       	th_data: 表格头部的属性值(必须要设置)
       	onEdit: 编辑过了所触发的事件
@@ -44,8 +44,8 @@
      	}
   	其中
       	value:th的名称,
-      	width:th的宽度(默认是80),
-      	showToast:鼠标悬浮到右侧图例上时显示的toast里是否显示该属性值,
+      	width:th的宽度(默认是80), 不支持calc()写法或百分比写法
+      	showToast:鼠标悬浮到右侧图例上时显示的toast里是否显示该属性值,
       	time_mode:1(是开始时间),2(结束时间)*注:(必须要有开始时间和结束时间标示)
       	edit: 该内容是否可编辑,
       	chooseTime: 是否启动选择时间控件 ,
@@ -138,9 +138,9 @@
         ganteData:data,
         start_time:new Date('2018/12/15').getTime(),
         end_time:new Date('2019/2/4').getTime(),
-//        tabe_width:500,
+        tabe_width:'calc(100% - 600px)',
         open:true,
-        height:400,
+        height:'400px',
         time_mode:1,
         th_data:th_data,
         onEdit(data){
