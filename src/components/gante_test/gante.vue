@@ -20,6 +20,7 @@
   import {resize} from '../gante_test/resize'
   import ganteSplit from '../gante_test/gante-split.vue'
   import calendar from './calendar.vue'
+  let number = 0  //序号
   export default{
     data(){
       return{
@@ -115,6 +116,7 @@
 //      统一改变数据
       change(data){
         if(data.data){
+            console.log(data.data)
           this.ganteData =this.objDeepCopy(data.data)
         }
         if(data.change_value){
@@ -164,7 +166,7 @@
       },
 //      初始化
       init(params,mode = true){
-        let {ganteData, height, th_data, start_time, end_time, open, time_mode, onEdit, onClick} = params
+        let {ganteData, height, th_data,tabe_width, start_time, end_time, open, time_mode, onEdit, onClick} = params
         if(ganteData != undefined){
           this.ganteData = ganteData
         }
@@ -174,6 +176,10 @@
         if(th_data != undefined){
           this.th_data = th_data
         }
+        if(!this.th_data.number){
+          let number = {number:{value:'序号',width:80,showToast:false,listen_click:false,weight:true}}
+          this.th_data = Object.assign(number,this.th_data)
+        }
         if(open!=undefined){
           this.open = open
         }
@@ -181,13 +187,13 @@
           this.time_mode = time_mode
         }
 
-       if(onEdit!=undefined){
-          this.onEdit = onEdit
-        }
+				if(onEdit!=undefined){
+					this.onEdit = onEdit
+				}
 
-        if(onClick!=undefined){
-          this.onClick = onClick
-        }
+				if(onClick!=undefined){
+					this.onClick = onClick
+				}
 
         if(start_time!=undefined){
           this.start_time = start_time
@@ -197,10 +203,15 @@
         }
         this.$nextTick(function () {
           let data = this.$refs.gante_gc.init(this.time_mode)
+          number = 0
           this.format_gante_data(this.ganteData,data.time,data.start_time)
           if(mode){
-            let _width = this.$refs.gante_box.clientWidth
-            this.tabe_width = _width/2
+            if(tabe_width!=undefined){
+              this.tabe_width = tabe_width
+            }else{
+              let _width = this.$refs.gante_box.clientWidth
+              this.tabe_width = _width/2
+            }
           }
         })
 
@@ -220,7 +231,12 @@
             this.$set(i,'open',this.open)
           }
           if(i.children){
+            number++
+            i.params['number'] = number
             this.format_gante_data(i.children,time,start_time)
+          }else{
+            number++
+            i.params['number'] = number
           }
         }
       }
