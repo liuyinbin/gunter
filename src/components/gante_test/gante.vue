@@ -1,10 +1,10 @@
 <template>
   <div class="ganteLiuBox">
-    <div ref="gante_box" :style="{height:height+'px'}" class="gante-box">
-      <div :style="{width:tabe_width+'px'}" class="gante-table-box">
+    <div ref="gante_box" :style="{height:Number(height) ? height+'px': height}" class="gante-box">
+      <div :style="{width: Number(tabe_width)? tabe_width+'px' : tabe_width }" class="gante-table-box">
         <gante-table @change-calendar="change_calendar" @on-click="onclick" @change="change" :th_data="th_data" :data="ganteData"></gante-table>
       </div>
-      <div class="gante-gc-box" :style="{left:tabe_width+'px'}">
+      <div class="gante-gc-box" :style="{left:Number(tabe_width) ? tabe_width+'px': tabe_width}">
         <gante-gc ref="gante_gc" :start_time="start_time" :end_time="end_time" :th_data="th_data" :gante_data="ganteData"></gante-gc>
       </div>
       <gante-split :left="tabe_width"></gante-split>
