@@ -12,9 +12,9 @@
 > 甘特图
 
     在main.js里引用
-   import gante from './components/gante_test/gante'
-  Vue.use(gante)
-  1.全局调用方法:
+    import gante from './components/gante_test/gante'
+          Vue.use(gante)
+          1.全局调用方法:
               this.$gante({
                 container:'.gante',
                 ganteData:data,
@@ -52,7 +52,7 @@
               onClick: 点击了listen_click设为true的th所触发的事件(只有listen_click设为true才能触发)
               onDragChangeTime: 拖动改变时间的事件，（data,resolve） data:当前的数据 resolve回调执行的函数,这个函数有个参数（bol）为false时，取消刚才拖动的时间。
               onLoad(resolve)： 懒加载  resolve回调函数  其中包含4个参数requestBol: 是否还可以请求 data： 加载的数据  start_time： 最小开始时间  end_time： 最大的结束时间
-    2.th_data示例{
+          2.th_data示例{
               title:{value:'任务名称',width:80,showToast:false,listen_click:true},
               startTime:{value:'开始时间',width:150,showToast:true,chooseTime:true,time_mode:1,sort_type:'asc'},
               endTime:{value:'结束时间',width:150,showToast:true,chooseTime:true,time_mode:2},
@@ -68,8 +68,9 @@
               shrink: 该项显示收缩的图例(只用设置其中某一项)
               listen_click: 是否监听点击事件
               sort_type: 排序 desc: 倒序 asc：正序(只能放在没有懒加载的模式中)
+
              th_data里的属性必须要和ganteData里params里的属性相对应,属性名要一样
-   3.ganteData示例[
+          3.ganteData示例[
               {
                 gunter_id:1,
                 params:{title:'项目制作任务',startTime:'2018-12-19',endTime:'2019-1-3',biaoti:'这是任务标题内容'},
