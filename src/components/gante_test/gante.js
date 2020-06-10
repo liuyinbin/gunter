@@ -1,8 +1,7 @@
 /**
  * Created by Administrator on 2018/12/27.
  */
-import Gante from '../../components/gante_test/gante.vue'
-
+import Gante from './gante.vue'
 export default {
   install(Vue, options = {}) {
     const VueGante = Vue.extend(Gante)
@@ -10,18 +9,24 @@ export default {
 
     function $gante(params) {
       return new Promise(resolve => {
-        if (!gante) {
-          gante = new VueGante()
-          gante.$mount()
-          let container = 'body'
-          if (params.container) {
-            container = params.container
-          }
-          // console.log('document.querySelector(container)',document.querySelector(container))
-          document.querySelector(container).appendChild(gante.$el)
+        //   console.log(gante)
+        let container = 'body'
+        if (params.container) {
+          container = params.container
         }
-        gante.init(params)
-        resolve()
+          gante = new VueGante()
+          gante.$store = this.$root.$store;
+          gante.$mount();
+        let ganteLiuBox=document.querySelector('#gante .ganteLiuBox');
+          // console.log('ganteLiuBox',ganteLiuBox);
+        if(ganteLiuBox){
+          document.querySelector(container).replaceChild(gante.$el,ganteLiuBox);
+        }else{
+          document.querySelector(container).appendChild(gante.$el);
+        }
+        // }
+        gante.init(params);
+        resolve(gante)
       })
     }
 

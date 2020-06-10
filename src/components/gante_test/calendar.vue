@@ -1,6 +1,5 @@
 <template>
-  <div @click.stop v-show="showCalendar" :style="{left:left+'px',top:top+'px'}" class="calendar-box">
-    <input type="text" :value="value" style="display: none">
+  <div @click.stop v-show="showCalendar" v-outclick="show_calendar" :style="{left:left+'px',top:top+'px'}" class="calendar-box">
     <div class="change-time">
       <span @click.stop="changeIndex(-1,'year')" class="last"><<</span>
       <span @click.stop="changeIndex(-1,'month')" style="margin-left: 10px" class="last"><</span>
@@ -26,34 +25,31 @@
   </div>
 </template>
 <script>
+    import outclick from '../../../utils/click-outside'
   export default{
-    data(){
-      return{
-        disp_date:new Date(),
-        today:new Date(),
-        current_day:new Date(),
-        monthList:[],
-        showCalendar:false,
-        checkedDay:'0000-00-00',
-      }
-    },
-    props:{
-      left:Number,
-      top:Number,
-      value:Boolean,
-      choose_date:{
-        default:new Date()
-      }
-    },
-//    created(){
-//      this.getOneMonth()
-//      this.checkedDay = this.format(this.disp_date.getFullYear(),this.disp_date.getMonth(),this.disp_date.getDate())
-//    },
-    mounted(){
-      document.addEventListener('click',this.show_calendar,false)
-    },
+      data(){
+        return{
+          disp_date:new Date(),
+          today:new Date(),
+          current_day:new Date(),
+          monthList:[],
+          showCalendar:false,
+          checkedDay:'0000-00-00',
+        }
+      },
+      directives:{
+          outclick
+      },
+      props:{
+        left:Number,
+        top:Number,
+        value:Boolean,
+        choose_date:{
+          default:new Date()
+        }
+      },
     methods:{
-      show_calendar(e){
+      show_calendar(){
         this.showCalendar = false
       },
       to_today(){
@@ -217,13 +213,17 @@
     flex: 1;
     flex-grow: 1;
     overflow: hidden;
+      transition: background .2s ease;
+      cursor: pointer;
+  }
+  .month li:hover{
+      background: #efefef;
   }
   .week-day{
     font-size:12px;
     text-align: center;
     overflow: hidden;
     z-index: 1;
-    cursor: default;
     transition: all .1s ease;
   }
   .calendar-bottom{

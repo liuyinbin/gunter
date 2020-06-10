@@ -1,15 +1,18 @@
+<!--中间分割线，分割左侧表格和右侧图表-->
 <template>
 	<div @mousedown="down"  ref="split_liu" :style="{left:Number(left)?left+'px':left}" class="gante-split-liu">
-		<div class="gante-split-column">
-			<div></div>
-			<div></div>
-			<div></div>
-		</div>
+		<!--<div class="gante-split-column">-->
+			<!--<div></div>-->
+			<!--<div></div>-->
+			<!--<div></div>-->
+		<!--</div>-->
 		<div v-show="show_split" :style="{left:split_resize_left+'px'}" class="gante-split-liu-resize"></div>
 	</div>
 </template>
 <script>
+    import searchLastWidth from './search_last_width'
 	export default{
+        mixins:[searchLastWidth],
 		data(){
 			return{
 				show_split:false,
@@ -17,7 +20,7 @@
 				mouseDown:false
 			}
 		},
-		props:['left'],
+		props:['left','th_data'],
 		mounted(){
 
 		},
@@ -44,16 +47,26 @@
 			},
 			doc_move(e){
 				if(this.mouseDown){
-					var _body = document.getElementsByTagName('body')[0]
-					this.split_resize_left = e.clientX - this.getPos(this.$refs.split_liu).x +3
+					var _body = document.getElementsByTagName('body')[0];
+					let _left = e.pageX - this.$refs.split_liu.getBoundingClientRect().left +3, // 移动的距离
+                        _width = document.getElementsByClassName('gante-table-box')[0].offsetWidth, // 表格的宽度
+                        _width_gc = document.getElementsByClassName('ganteview-box')[0].offsetWidth; // 图表的宽度
+					console.log(_left)
+					if(_left + _width <= 480){
+                        _left = 480 - _width
+                    }
+				    if(_width_gc - _left <= 30){
+                        _left = _width_gc - 30
+                    }
+					this.split_resize_left = _left;
 					_body.style.cursor = 'e-resize'
 				}
 			},
 			doc_up(){
 				if(this.mouseDown){
 					var _body = document.getElementsByTagName('body')[0]
-					this.$parent.tabe_width = this.split_resize_left + document.getElementsByClassName('gante-table-box')[0].offsetWidth
-					document.getElementsByClassName('gante-gc-box')[0].style.width = document.getElementsByClassName('gante-box')[0].offsetWidth - this.$parent.tabe_width+'px'
+					this.$parent.tabe_width = this.split_resize_left + document.getElementsByClassName('gante-table-box')[0].offsetWidth;
+                    this.find_attr(this.$parent.tabe_width,this.th_data)
 					this.show_split = false
 					this.split_resize_left = 0
 					this.mouseDown = false
@@ -66,28 +79,26 @@
 			down(){
 				this.mouseDown = true
 				this.show_split = true
-				document.getElementsByTagName('body')[0].className += 'unselecttable'
-				document.addEventListener('mousemove',this.doc_move,false)
-				document.addEventListener('mouseup',this.doc_up,false)
+				document.getElementsByTagName('body')[0].classList.add('unselecttable')
+				document.addEventListener('mousemove',this.doc_move,{passive:false})
+				document.addEventListener('mouseup',this.doc_up,{passive:false})
 			}
 		}
 	}
 </script>
 <style>
 	.gante-split-liu{
-		width: 5px;
-		background: #ebeef5;
+		width: 3px;
+		background: #ccc;
 		height: 100%;
 		position: absolute;
-		border-left: 1px solid #ccc;
-		border-right: 1px solid #ccc;
-		box-shadow: 0 0 5px #cccccc;
+        top: 0;
 		cursor: e-resize;
-		z-index:5;
+		z-index:2;
 		transition: background .1s ease;
 	}
 	.gante-split-liu:hover{
-		background:#dfe7fb ;
+		background:#666 ;
 	}
 	.gante-split-column{
 		position: absolute;
@@ -101,13 +112,13 @@
 		width: 3px;
 		height: 3px;
 		border-radius: 50%;
-		background: #00b0ff;
+		background: #fff;
 		margin: 3px auto;
 	}
 	.gante-split-liu-resize{
 		position: absolute;
 		top:0;
-		width: 5px;
+		width: 3px;
 		background: #ccc;
 		height: 100%;
 	}
