@@ -323,7 +323,8 @@
                 }else{
                     this.ganteData = JSON.parse(JSON.stringify(params.ganteData));
                 }
-                if(!params.openLoad){
+
+                if(!params.openLoad && mode){
                     this.showLoading = false
                     this.$nextTick(function () {
                         this.$refs.gante_gc.requestBol = false
@@ -340,6 +341,7 @@
                 if (current_date > this.end_time) {
                     this.end_time = current_date;
                 }
+
                 this.$nextTick(function () {
                     let data = this.$refs.gante_gc.init(this.time_mode);
                     number = 0;

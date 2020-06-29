@@ -1,5 +1,8 @@
 <template>
-	<div class="gante">
+	<div>
+		<div class="gante">
+		</div>
+		<button @click="refresh" class="refresh">更新数据</button>
 	</div>
 </template>
 <script>
@@ -89,6 +92,11 @@
               children: 子任务数据
      */
 	export default{
+		data(){
+			return{
+				GANTT: null
+			}
+		},
 		mounted(){
 			let data=[
 						{
@@ -208,13 +216,14 @@
 								}
 							]
 						},]
-			this.$gante({
+			 this.$gante({
 				container:'.gante',
 				ganteData:data,
 				start_time:new Date('2018/12/15').getTime(),
 				end_time:new Date('2019/2/4').getTime(),
 				tabe_width:'calc(100% - 600px)',
 				open:true,
+				 openLoad:true,
 				height:'400px',
 				time_mode:1,
 				th_data:th_data,
@@ -227,8 +236,34 @@
 				onLoad(resolve){
 					resolve(false, loadData, new Date('2018/12/15').getTime(), new Date('2019/2/4').getTime())
 				}
-			})
+			}).then(data =>{
+				 this.GANTT = data;
+			 })
+
+
 		},
+		methods:{
+			refresh(){
+				let datas = [{
+					gunter_id:1,
+					params:{title:'项目制作任务',startTime:'',endTime:'2019-1-3',biaoti:'这是任务标题内容'},
+					start_time:0,
+					end_time:new Date(2019,0,3).getTime(),
+					level:1,
+					children:[
+						{
+							gunter_id:2,
+							params:{title:'子任务',startTime:'2018-12-19',endTime:'2019-1-1',biaoti:'这是第一级子任务内容'},
+							start_time:new Date(2018,11,19).getTime(),
+							end_time:new Date(2019,0,1).getTime(),
+							bg_color:'yellow',
+							level:2
+						}
+					]
+				}]
+				this.GANTT.init({ganteData: datas},false)
+			}
+		}
 	}
 </script>
 <style>
