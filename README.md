@@ -1,4 +1,6 @@
 # Vue制作的简单甘特图
+
+在线预览demo https://liuyinbin.github.io/gunter/#/
 新增了些功能
 
 1.全屏模式显示
