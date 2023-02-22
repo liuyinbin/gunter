@@ -1,4 +1,5 @@
 # Vue制作的简单甘特图
+最近打算用vue3重新再重构一下，优化代码
 
 在线预览demo https://liuyinbin.github.io/gunter/#/
 新增了些功能
